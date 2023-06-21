@@ -1,0 +1,724 @@
+/**
+ *@author Integrates: Enmanuel Perez, Hervin Pradines, Marcos Barcia,Rodrigo Millán
+ *Clase principal que contiene el método main para ejecutar el programa
+ * 
+ * 
+ */
+
+package sprintmodulocuatro;
+
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+
+public class principal {
+
+	String nombre1;
+
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		Contenedor listado = new Contenedor();		
+
+		Scanner leer = new Scanner(System.in);
+
+		boolean salir = false;
+
+		int opcion;		
+
+		System.out.println("Bienvenido al sistema de registro e informacion de aseguradora HERM");
+
+		while(!salir){
+
+			System.out.println("\n\t-- Menu opcioness --");
+			System.out.println("1.- Almacenar cliente");
+			System.out.println("2.- Almacenar profecional");
+			System.out.println("3.- Almacenar administarivo");
+			System.out.println("4.- Almacenar capacitacion");
+			System.out.println("5.- Eliminar usuario");
+			System.out.println("6.- Listar usuarios");
+			System.out.println("7.- Listar usuarios por tipo");
+			System.out.println("8.- Lista capacitacion");
+			System.out.println("9.- Salir");
+
+			try{
+
+				System.out.println("Seleccione la opcion deseada: ");
+				opcion = Integer.parseInt(leer.nextLine());
+
+				switch (opcion){
+				
+				case 1:
+					ingresarCliente(listado, leer);		
+					break;
+				
+				case 2:
+					ingresarProfecional(listado, leer);
+					break;
+				case 3:
+					ingresarAdministrativo(listado, leer);
+					break;
+				
+				case 4:
+					
+					ingresarCapacitacion(listado,leer);
+					break;
+				
+				case 5:					
+					eliminarUsuario( listado, leer);
+					break;
+				
+				case 6:					
+					listarUsuarios(listado);					
+					break;
+				
+				case 7:					
+					usuariosPorTipo(listado,leer);
+					break;
+
+				case 8:
+					listarCapacitacion(listado);
+					break;
+				case 9:
+					System.out.println("Que tenga una excelente jornada");
+					salir=true;
+					
+					break;   
+				default:   
+					System.out.println("Las opciones son entre 1 y 8");
+
+				}
+			}
+			//Si el usuario ingresa un caracter que no corresponde
+			catch(InputMismatchException | NumberFormatException e){
+				System.out.println("Debes seleccionar un numero de opcion");
+			}
+
+			//Pausa en la ejecución del programa
+			System.out.println("\n\t\t---Pulse ENTER para continuar---");
+			leer.nextLine();
+		}
+		}
+
+		
+		
+		public static void ingresarCliente(Contenedor listado, Scanner leer) {
+		    String nombre, apellidos, fechaNacimiento, telefono, afp, direccion, comuna;
+		    int run, edad;
+		
+		  //pedir nombre de cliente     	
+
+			while (true) {
+				System.out.print("Ingrese el nombre del cliente : ");
+				nombre = leer.nextLine();	                    
+				if (!nombre.isEmpty() && Validar.validarNomApe(nombre)) {
+					nombre = nombre.substring(0,1).toUpperCase()+nombre.substring(1).toLowerCase();;
+					break;
+				} else {
+					System.out.println("El nombre no cumple con las condiciones establecidas.");
+				}
+			}     	
+
+			//pedir apellidos del cliente           	
+
+
+			while (true) {
+				System.out.print("Ingrese el apellido del cliente : ");
+				apellidos = leer.nextLine();	                    
+				if (!apellidos.isEmpty() && Validar.validarNomApe(nombre)) {
+					apellidos = apellidos.substring(0,1).toUpperCase()+apellidos.substring(1).toLowerCase();;
+					break;
+				} else {
+					System.out.println("El apellido no cumple con las condiciones establecidas.");
+				}
+			}     	
+
+			//pedir fecha nacimiento cliente
+
+
+			while (true) {
+				System.out.print("Ingrese la fecha de nacimiento del cliente (dd/mm/aaaa): ");
+				fechaNacimiento = leer.nextLine();
+				if (!fechaNacimiento.isEmpty() &&Validar.validarFecha(fechaNacimiento)) {
+
+					break;
+				} else {
+					System.out.println("Fecha inválida. Por favor, inténtelo nuevamente.");
+				}
+			}     
+
+			//pedir rut
+
+
+			while (true) {
+				try {
+
+
+					System.out.print("Ingrese el RUN del cliente: ");
+					run = Integer.parseInt(leer.nextLine());
+					if(run <= 99999999  && Validar.validarRut(run)) {
+						break;
+					} else {
+						System.out.println("Ingrese un rut valido");
+					}
+				}catch(InputMismatchException | NumberFormatException e1){
+					System.out.println("Debes ingresar un rut valido");
+
+				}	
+
+			}
+
+
+			//pedimos el telefono
+
+
+			int opcionTelefono=0;
+			while (true) {
+
+				try {
+
+					System.out.print("Ingrese el teléfono del cliente, indique si es celular(1) o fijo(2) : ");
+
+					opcionTelefono = Integer.parseInt(leer.nextLine());
+
+					if(opcionTelefono == 1) {
+						System.out.println("Ingrese el numero de celular, recuede que son 9 digitos:");
+						telefono = leer.nextLine();
+						if (!telefono.isEmpty() && Validar.validarTelefono(telefono)) {
+							telefono = "el numero de celular es +56" + telefono;
+							break;
+						}else {
+							System.out.println("Debe de ingesar datos");
+							
+						}
+					}else {
+						if(opcionTelefono == 2) {
+						System.out.println("Ingrese el numero de telefono fijo, recuede que son 9 digitos:");
+						telefono = leer.nextLine();
+						if (!telefono.isEmpty() && Validar.validarTelefono(telefono)) {
+							telefono = "el numero telefono fijo es +56" + telefono;
+							break;
+						}else {
+							System.out.println("Debe de ingesar datos");
+						}
+					}	
+					}
+
+				}catch(InputMismatchException | NumberFormatException e2){
+					System.out.println("Debes seleccionar un numero de opcion");
+					leer.nextLine();
+				}
+
+			}	
+
+			// pedimos afp
+
+
+
+			while (true) {
+				System.out.print("Ingrese la AFP del cliente: ");
+				afp = leer.nextLine();
+				if(!afp.isEmpty() && Validar.validarAfp(afp)) {
+					break;
+				}else {
+					System.out.println("Debe de ingresar datos correctos");
+				}          	
+			}
+
+			// pedira datos siatema salud
+
+			String sistemaSalud;
+			while (true) {
+				System.out.println("Ingrese el sistema de salud del cliente, (1) Fonasa y (2) Isapre:");
+				sistemaSalud = leer.nextLine();
+				if(!sistemaSalud.isEmpty() && Validar.validarsistemaSalud(sistemaSalud)) {
+
+					break;
+				}else {
+					System.out.println("Debe de ingesar dato valido");
+				} 
+			}
+
+
+			// direccion
+
+			while (true) {
+				System.out.print("Ingrese la dirección del cliente: ");
+				direccion = leer.nextLine();
+				if(Validar.validarDireccion(direccion)) {
+					break;
+				}else {
+					System.out.println("La direccion debe estar entre 1 y 70 caracteres");
+				}
+
+
+			}         
+			// comuna
+
+
+			while (true) {
+				System.out.print("Ingrese la comuna del cliente: ");
+				comuna = leer.nextLine();
+				if(Validar.validarComuna(comuna)) {
+					break;
+				}else {
+					System.out.println("La comuna debe estar entre 1 y 50 caracteres");
+				}
+
+
+			}      
+
+
+
+			
+
+			while (true) {
+			    System.out.print("Ingrese la edad del cliente: ");
+			    try {
+			        edad = Integer.parseInt(leer.nextLine());
+			        if (Validar.validarEdad(edad)) {
+			            break;
+			        } else {
+			            System.out.println("La edad debe estar entre 0 y 150 años");
+			            leer.nextLine();
+			        }
+			    } catch (InputMismatchException |NumberFormatException e4) {
+			        System.out.println("Debes ingresar una edad valida, tiene que ser numeros");
+			        
+			    }
+			}
+			
+			
+			
+			
+
+			// crear un nuevo objeto de la clase cliente,y pasamos sus datos
+
+			Cliente cliente = new Cliente();
+			cliente.setNombre(nombre);
+			cliente.setApellidos(apellidos);
+			cliente.setFechaNacimiento(fechaNacimiento);
+			cliente.setRun(run);
+			cliente.setApellidos(apellidos);
+			cliente.setTelefono(telefono);
+			cliente.setAfp(afp);
+			cliente.setSistemaSalud(sistemaSalud);
+			cliente.setDireccion(direccion);
+			cliente.setComuna(comuna);
+			cliente.setEdad(edad);        
+
+
+			listado.agregarUsuario(cliente);
+
+			System.out.println("Usuario agregado correctamente.");
+
+		
+		
+	}
+
+		public static void ingresarProfecional(Contenedor listado, Scanner leer) {
+			 String nombre, fechaNacimiento, titulo,fechaIngreso;
+			    int run;
+			    
+			    
+
+				//pedir nombre profecional, mas de 10 y menos de 50 caracteres	
+
+				while (true) {
+					System.out.print("Ingrese el nombre del Profecional : ");
+					nombre = leer.nextLine();	                    
+					if (!nombre.isEmpty() && Validar.validarNombre(nombre))  {
+						nombre = nombre.substring(0,1).toUpperCase()+nombre.substring(1);
+						break;
+					} else {
+						System.out.println("Debe ingresar datos validos, entre 10 y 50 caracteres");
+					}
+				}     	
+
+				//fecha nacimento 
+
+
+				while (true) {
+					System.out.print("Ingrese la fecha de nacimiento del profecional (dd/mm/aaaa): ");
+					fechaNacimiento = leer.nextLine();
+					if (!fechaNacimiento.isEmpty() &&Validar.validarFecha(fechaNacimiento)) {
+
+						break;
+					} else {
+						System.out.println("Fecha inválida. Por favor, inténtelo nuevamente en formato dia/mes/año.");
+					}
+				}     
+
+				// rut profecional
+				while (true) {
+					try {
+
+
+						System.out.print("Ingrese el RUN del profecional, sin punto ni guion: ");
+						run = Integer.parseInt(leer.nextLine());
+						if(run <= 99999999  && Validar.validarRut(run)) {
+							break;
+						} else {
+							System.out.println("Ingrese un rut valido");
+						}
+					}catch(InputMismatchException | NumberFormatException e1){
+						System.out.println("Debes ingresar un rut valido, debe de ser menor a 99999999");
+						leer.nextLine(); 
+					}	
+
+				}
+
+
+				//titulo del profecional
+
+				while (true) {
+
+					System.out.println("Ingrese el titulo del profecional: ");
+					titulo = leer.nextLine();
+					if(!titulo.isEmpty() && Validar.validarNombre(titulo)) {
+						break;
+					}else {
+						System.out.println("Debe ingresar datos validos, entre 10 y 50 caracteres");
+					}
+
+
+				}
+
+				//fecha de ingreso dle profecional
+
+				while (true) {
+					System.out.println("Ingrese fecha de ingreso del profecional en formato dd/mm/aaaa");
+					fechaIngreso=leer.nextLine();
+					if(!fechaIngreso.isEmpty() && Validar.validarFecha(fechaIngreso)) {
+						break;
+					}else {
+						System.out.println("Debe de ingresar una fecha valida");
+					}
+
+				}
+
+				Profecional profecional = new Profecional();
+
+
+				profecional.setNombre(nombre);
+				profecional.setFechaNacimiento(fechaNacimiento);
+				profecional.setRun(run);
+				profecional.setTitulo(titulo);
+				profecional.setFechaIngreso(fechaIngreso);
+
+				listado.agregarUsuario(profecional);
+
+
+				System.out.println("Profecional agregado correctamente.");
+
+
+			    
+			    
+		}
+		
+		public static void ingresarAdministrativo(Contenedor listado, Scanner leer) {
+			String nombre, fechaNacimiento, area, experienciaPrevia ;
+		    int run;
+			
+
+			//pedir nombre administrativo, mas de 10 y menos de 50 caracteres	
+
+			while (true) {
+				System.out.print("Ingrese el nombre del Administrativo : ");
+				nombre = leer.nextLine();	                    
+				if (!nombre.isEmpty() && Validar.validarNombre(nombre))  {
+					nombre = nombre.substring(0,1).toUpperCase()+nombre.substring(1);
+					break;
+				} else {
+					System.out.println("Debe ingresar datos validos, entre 10 y 50 caracteres");
+				}
+			}     	
+
+			//fecha nacimento 
+
+
+			while (true) {
+				System.out.print("Ingrese la fecha de nacimiento del Admistrativo (dd/mm/aaaa): ");
+				fechaNacimiento = leer.nextLine();
+				if (!fechaNacimiento.isEmpty() &&Validar.validarFecha(fechaNacimiento)) {
+
+					break;
+				} else {
+					System.out.println("Fecha inválida. Por favor, inténtelo nuevamente en formato dia/mes/año.");
+				}
+			}     
+
+			// rut 
+			while (true) {
+				try {
+
+
+					System.out.print("Ingrese el rut del Administrativo, sin punto ni guion: ");
+					run = Integer.parseInt(leer.nextLine());
+					if(run <= 99999999  && Validar.validarRut(run)) {
+						break;
+					} else {
+						System.out.println("Ingrese un rut valido");
+					}
+				}catch(InputMismatchException | NumberFormatException e1){
+					System.out.println("Debes ingresar un rut valido, debe de ser menor a 99999999");
+					leer.nextLine(); 
+				}	
+
+			}
+
+			//area de trabajo
+
+			while(true) {
+				System.out.println("Ingrese area de trabajo del adminitrativo, deben de ser entre 5 y 20 caracteres:");
+				area = leer.nextLine();
+				if(!area.isEmpty() && Validar.validarArea(area)) {
+					break;
+
+				}else {
+					System.out.println("Debe de infesar datos validos, entre 5 y 20 caracteres");
+				}
+
+
+			}
+
+			// experiecia
+
+			while (true) {
+				System.out.println("Ingrese experiencia del administrativo, deben de ser menos de 100 caracteres:");
+				experienciaPrevia =leer.nextLine();
+				if (!experienciaPrevia.isEmpty() && Validar.validarExperiencia(experienciaPrevia)) {
+					break;
+				}else {
+					System.out.println("Debe de ingresar datos validos");
+				}
+
+
+			}
+
+
+			Administrativo administrativo = new Administrativo();
+
+
+			administrativo.setNombre(nombre);
+			administrativo.setFechaNacimiento(fechaNacimiento);
+			administrativo.setRun(run);
+			administrativo.setArea(area);
+			administrativo.setExperienciaPrevia(experienciaPrevia);
+
+			listado.agregarUsuario(administrativo);
+
+
+			System.out.println("Admistrativo ingresado correctamente");		
+			
+			
+		}
+		
+		public static void ingresarCapacitacion (Contenedor listado, Scanner leer) {
+			
+			
+			
+		 // almacenar capacitaciom
+
+			String idCapacitacion, diaSemana, hora,lugar,duracion;
+			
+			int rutCliente,cantidadAsistentes;
+			
+			
+
+			while (true) {
+				System.out.println("Ingrese id de la capacitacion ");
+				idCapacitacion = leer.nextLine();
+				if(!idCapacitacion.isEmpty()) {
+					break;
+				}else {
+					System.out.println("Ingrese una id de la capacitacion");
+				}
+
+			}
+
+			//rut
+			while (true) {
+				try {
+
+
+					System.out.print("Ingrese el rut del cliente, sin punto ni guion: ");
+					rutCliente = Integer.parseInt(leer.nextLine());
+					if(rutCliente <= 99999999  && Validar.validarRut(rutCliente)) {
+						break;
+					} else {
+						System.out.println("Ingrese un rut valido");
+					}
+				}catch(InputMismatchException | NumberFormatException e1){
+					System.out.println("Debes ingresar un rut valido, debe de ser menor a 99999999");
+					leer.nextLine(); 
+				}	
+
+			}
+
+
+			//dia de la capacitacion 
+
+			while (true) {
+				System.out.println("ingrese dia de la sema de la capacitacion debe de ser entre lunes a domingo:");
+				diaSemana= leer.nextLine();
+				if(!diaSemana.isEmpty() && Validar.validarDia(diaSemana)) {
+					
+					diaSemana = diaSemana.substring(0, 1).toUpperCase() + diaSemana.substring(1).toLowerCase();
+
+					break;
+				}else {
+					System.out.println("Debe de ingresar un dia valido");
+				}
+			}
+
+			// hora de la capacitacion
+
+			while (true ) {
+				System.out.println("Ingrese la hora de la capacitacion, debe de estar en formato HH:MM :");
+				hora = leer.nextLine();
+				if(!hora.isEmpty() && Validar.validarHora(hora)) {
+					break;
+				}else {
+					System.out.println("Ingrese una hora en formato correcto");
+				}
+			}
+			
+			// lugar capacitacion
+			
+			while(true) {
+				System.out.println("Ingrese el lugar de la capacitacion: ");
+				lugar = leer.nextLine();
+				if(!lugar.isEmpty() && Validar.validarNombre(lugar)) {
+					break;
+				}else {
+					System.out.println("Ingrese un lugar entre 10 y 50 caracteres");
+				}
+			}			
+			
+
+			while(true) {
+				System.out.println("Ingrese la duracion de la capacitacion: ");
+				duracion = leer.nextLine();
+				if(!lugar.isEmpty() && Validar.validarDireccion(duracion)) {
+					break;
+				}else {
+					System.out.println("Ingrese una duracion entre maximo 70  caracteres");
+				}
+
+			}
+
+
+			// cantidad asistentes
+
+
+			while (true) {    
+			    System.out.print("Ingrese la cantidad de asistentes: ");
+			    String cantidad = leer.nextLine();
+			    
+			    if (cantidad.isEmpty()) {
+			        System.out.println("Debe ingresar un valor.");
+			    } else {
+			        try {
+			            cantidadAsistentes = Integer.parseInt(cantidad);
+			            
+			            if (cantidadAsistentes <= 10000 && Validar.validarNumeros(cantidadAsistentes)) {
+			                break;
+			            } else {
+			                System.out.println("Ingrese una cantidad válida menor a 1000.");
+			            }
+			        } catch (NumberFormatException e) {
+			            System.out.println("Debe ingresar un número válido.");
+			        }
+			    }
+			}
+
+			Capacitacion capacitacion = new Capacitacion();
+
+			capacitacion.setIdcapacitacion(idCapacitacion);
+			capacitacion.setRutCliente(rutCliente);
+			capacitacion.setDiaSemana(diaSemana);
+			capacitacion.setHora(hora);
+			capacitacion.setLugar(lugar);
+			capacitacion.setDuracion(duracion);
+			capacitacion.setCantidadAsistentes(cantidadAsistentes);
+
+
+			listado.agregarCapacitacion(capacitacion);
+
+			
+		}
+
+		public static void eliminarUsuario(Contenedor listado, Scanner leer) {
+			int run;			
+			
+			System.out.print("Ingrese el rut del usuario que desee eleminar, sin punto ni guion: ");
+			run = Integer.parseInt(leer.nextLine());
+			if(run<99999999 && Validar.validarRut(run)) {
+				listado.eliminarUsuarioPorRut(run);	 	               
+			}         				
+		}
+
+		public static void listarUsuarios(Contenedor listado) {
+			
+			listado.listaUsuarios();
+		}
+		
+		public static void usuariosPorTipo(Contenedor listado, Scanner leer) {
+			
+			// listar por tipo de usuario
+
+			int opcionUsuario = 0;
+			boolean salirListado = false;
+			while(!salirListado) {
+				System.out.println("\n\t-- Listar por tipo de usuario --");
+				System.out.println("1.- Listar Cliente");
+				System.out.println("2.- Listar Profecional");
+				System.out.println("3.- Listar Administarivo");
+				System.out.println("4.- Salir");
+
+				try {
+
+
+					System.out.println("Seleccione la opcion deseada: ");
+					opcionUsuario = Integer.parseInt(leer.nextLine());
+
+					switch (opcionUsuario){
+					case 1:
+						listado.listarClientes();	 
+						break;
+					case 2:
+						listado.listarProfecional();
+						break;
+					case 3:
+						listado.listarAdministrativo();
+						break;
+					case 4:
+						salirListado = true;
+						break;
+					default:
+						System.out.println("Las opciones son entre 1 y 4 ");
+					}
+				}
+				catch(InputMismatchException | NumberFormatException e3){
+					System.out.println("Debes seleccionar un numero de opcion");
+				}
+
+			} 
+			
+			
+		}
+		
+		public static void listarCapacitacion(Contenedor listado) {
+			
+			listado.listaCapacitacionUsuario();
+		}
+} 
+
+
+
+
